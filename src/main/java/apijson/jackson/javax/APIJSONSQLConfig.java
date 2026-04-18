@@ -71,18 +71,20 @@ public class APIJSONSQLConfig<T> extends apijson.framework.javax.APIJSONSQLConfi
 	public static <T> SQLConfig<T, Map<String, Object>, List<Object>> newSQLConfig(
 			RequestMethod method, String table, String alias
 			, LinkedHashMap<String, Object> request, List<Join<T, Map<String, Object>, List<Object>>> joinList, boolean isProcedure) throws Exception {
-		return newSQLConfig(method, table, alias, request, joinList, isProcedure, new SimpleCallback<T>() {});
+		return newSQLConfig(method, table, alias, request, joinList, isProcedure, (SimpleCallback<T>) SIMPLE_CALLBACK);
 	}
 
 	public static class SimpleCallback<T> extends AbstractSQLConfig.SimpleCallback<T, Map<String, Object>, List<Object>> {
 
 		@Override
-		public SQLConfig<T, Map<String, Object>, List<Object>> getSQLConfig(RequestMethod method, String database, String schema
-				, String datasource, String table) {
+		public SQLConfig<T, Map<String, Object>, List<Object>> getSQLConfig(RequestMethod method, String database
+				, String datasource, String namespace, String catalog, String schema, String table) {
 			SQLConfig<T, Map<String, Object>, List<Object>> config = APIJSONApplication.createSQLConfig();
 			config.setMethod(method);
 			config.setDatabase(database);
 			config.setDatasource(datasource);
+			config.setNamespace(namespace);
+			config.setCatalog(catalog);
 			config.setSchema(schema);
 			config.setTable(table);
 			return config;
